@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detector de Fracturas</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            margin: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            margin: 20px 0;
+        }
+
+        button {
+            background: #00c6ff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0072ff;
+        }
+
+        img {
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .fractura {
+            color: #ff4d4d;
+        }
+
+        .no-fractura {
+            color: #00ffcc;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🦴 Detector de Fracturas</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image">
+        <br>
+        <button type="submit">Analizar</button>
+    </form>
+
+    {% if image_url %}
+        <img src="{{ image_url }}" width="300">
+    {% endif %}
+
+    {% if result %}
+        <div class="result 
+            {% if result == 'Fractura' %}fractura{% else %}no-fractura{% endif %}">
+            
+            Resultado: {{ result }} <br>
+            Confianza: {{ prob|floatformat:2 }}
+
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
